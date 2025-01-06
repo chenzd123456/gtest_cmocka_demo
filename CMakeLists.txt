@@ -5,8 +5,13 @@ cmake_minimum_required(VERSION 3.10)
 project(MyProject VERSION 1.0 LANGUAGES C CXX)
 
 # 设置 C 和 C++ 标准
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_subdirectory(deps/cmocka)
+add_subdirectory(deps/gtest)
 
 # 包含头文件目录
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -24,3 +29,4 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
 endif()
+
