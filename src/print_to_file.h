@@ -7,7 +7,7 @@ extern "C" {
 
 #include <stdio.h>
 
-void print_to_file(const char *filename, const char *text);
+int print_to_file(const char *filename, const char *text);
 
 #ifdef __cplusplus
 }
