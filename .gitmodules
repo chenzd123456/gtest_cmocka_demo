@@ -1,0 +1,6 @@
+[submodule "test/deps/cmocka"]
+	path = test/deps/cmocka
+	url = https://github.com/clibs/cmocka.git
+[submodule "test/deps/gtest"]
+	path = test/deps/gtest
+	url = https://github.com/google/googletest.git
