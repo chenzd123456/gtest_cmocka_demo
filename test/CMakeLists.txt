@@ -10,11 +10,12 @@ include_directories(
 add_executable(unit_tests
     main.cpp
     print_to_file_test.cpp
+    fib_test.cpp
     mock_functions.cpp
 )
 
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-set (CMAKE_CPP_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_CPP_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 
 # Set C++ as linker language
 set_property(TARGET unit_tests PROPERTY LINKER_LANGUAGE CXX)
@@ -26,6 +27,8 @@ target_link_libraries(unit_tests
     gmock
     gtest_main
     ${PROJECT_NAME}_lib
+    mock_lib gcov
+    gcov
 )
 
 # Add test

@@ -33,14 +33,14 @@ target_link_libraries(mock_lib PRIVATE gtest gmock)
 
 # Add main executable
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib mock_lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_lib mock_lib gcov)
 
 # Set output directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 # Add compiler options
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
 endif()
 
 # Include test directory
