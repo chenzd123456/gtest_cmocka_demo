@@ -34,9 +34,9 @@ file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 # Add test executable
 add_executable(${PROJECT_NAME}
     # main.cpp
-    # print_to_file_test.cpp
+    #print_to_file_test.cpp
     # fib_test.cpp
-    # mock_functions.cpp
+    src/mock_functions.cpp
     ${SOURCES} ${TEST_SOURCES}
 )
 
@@ -44,9 +44,6 @@ add_executable(${PROJECT_NAME}
 file(GLOB_RECURSE MOCK_SOURCES "${PROJECT_SOURCE_DIR}/src/mock_functions.cpp")
 add_library(mock_lib STATIC ${MOCK_SOURCES})
 target_include_directories(mock_lib PRIVATE ${CMAKE_SOURCE_DIR}/deps/cmocka/include)
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage")
-set(CMAKE_CPP_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage")
 
 # Set C++ as linker language
 set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
@@ -62,10 +59,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # gtest_discover_tests(unit_tests)
 
 # Set output directory
-# Set output directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 # Add compiler options
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+    target_link_options(${PROJECT_NAME} PRIVATE -Wl,--wrap=open -Wl,--wrap=write -Wl,--wrap=close)
 endif()

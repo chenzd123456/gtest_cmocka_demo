@@ -28,7 +28,7 @@ TEST_F(PrintToFileTest, SuccessCase) {
     const char *test_filename = "test.txt";
 
     // Setup mock expectations
-    EXPECT_CALL(*mock_functions_ptr, open(_, _))
+    EXPECT_CALL(mock_functions, open(_, _))
         .WillOnce(Return(3));  // Use any valid file descriptor
     EXPECT_CALL(mock_functions, write(_, test_message, strlen(test_message)))
         .WillOnce(Return(strlen(test_message)));
