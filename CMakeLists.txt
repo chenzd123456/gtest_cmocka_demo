@@ -44,4 +44,4 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 # endif()
 
 # Include test directory
-add_subdirectory(test)
+# add_subdirectory(test)

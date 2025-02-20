@@ -1,8 +1,10 @@
 build/**
 bin/**
+deps/**
+
+test/deps/**
 test/build/**
 test/bin/**
-deps/**
-coverage_report/**
-coverage.info
-coverage.json
+test/coverage_report/**
+test/coverage.info
+test/coverage.json

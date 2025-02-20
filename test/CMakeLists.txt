@@ -1,8 +1,10 @@
+cmake_minimum_required(VERSION 3.14)
+
 project(unit_tests VERSION 1.0 LANGUAGES C CXX)
 
 # Set C/C++ standards
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -17,8 +19,8 @@ add_subdirectory(deps/gtest)
 add_subdirectory(deps/cmocka)
 # Test configuration
 include(GoogleTest)
-# include_directories(${PROJECT_SOURCE_DIR}/deps/gtest/googletest/include)
-# include_directories(${PROJECT_SOURCE_DIR}/deps/gtest/googlemock/include)
+include_directories(${PROJECT_SOURCE_DIR}/deps/gtest/googletest/include)
+include_directories(${PROJECT_SOURCE_DIR}/deps/gtest/googlemock/include)
 include_directories(${PROJECT_SOURCE_DIR}/deps/cmocka/include)
 
 # Include source headers
@@ -38,24 +40,32 @@ add_executable(${PROJECT_NAME}
     ${SOURCES} ${TEST_SOURCES}
 )
 
+# Add mock library
+file(GLOB_RECURSE MOCK_SOURCES "${PROJECT_SOURCE_DIR}/src/mock_functions.cpp")
+add_library(mock_lib STATIC ${MOCK_SOURCES})
+target_include_directories(mock_lib PRIVATE ${CMAKE_SOURCE_DIR}/deps/cmocka/include)
 
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
-set(CMAKE_CPP_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage")
+set(CMAKE_CPP_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage")
 
 # Set C++ as linker language
 set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
 
 # Link test libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE 
-# mock_lib
- gtest gmock gcov
+    gcov
+    mock_lib
+    gtest gmock 
 )
 
 # Add test
 # gtest_discover_tests(unit_tests)
 
 # Set output directory
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
-)
+# Set output directory
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
+# Add compiler options
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+endif()
