@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "fib.cpp"
-
+#include "fib.h"
+#include <stddef.h>
 TEST(FibTest, HandlesZeroInput) {
     EXPECT_EQ(fib(0), 1);
 }
@@ -18,9 +18,4 @@ TEST(FibTest, HandlesPositiveInput) {
     EXPECT_EQ(fib(4), 3);
     EXPECT_EQ(fib(5), 5);
     EXPECT_EQ(fib(10), 55);
-}
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }

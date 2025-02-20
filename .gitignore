@@ -1,5 +1,8 @@
 build/**
 bin/**
+test/build/**
+test/bin/**
+deps/**
 coverage_report/**
 coverage.info
 coverage.json

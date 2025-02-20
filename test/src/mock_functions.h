@@ -1,6 +1,6 @@
 #ifndef MOCK_FUNCTIONS_H
 #define MOCK_FUNCTIONS_H
-
+#include <stddef.h>
 #include <gmock/gmock.h>
 
 class MockFunctions {

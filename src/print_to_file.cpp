@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
-#include "../test/mock_functions.h"
+// #include "../test/mock_functions.h"
 
 int print_to_file(const char *filename, const char *text) {
     int fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC);
