@@ -47,9 +47,6 @@ TEST_F(PrintToFileTest, SuccessCase)
 
     // Verify results
     EXPECT_EQ(result, 0);
-
-    // Verify no other calls were made
-    // EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(mock_functions_ptr.get()));
 }
 
 TEST_F(PrintToFileTest, FailureCase)
@@ -66,7 +63,4 @@ TEST_F(PrintToFileTest, FailureCase)
 
     // Verify results
     EXPECT_EQ(result, -1);
-
-    // Verify no other calls were made
-    // EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&mock_functions));
 }
