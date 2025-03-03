@@ -9,11 +9,15 @@ MockFunctions *mock_functions = nullptr;
 extern "C"
 {
     extern int __real_open(const char *pathname, int flags, ...);
+
     extern int __real_write(int fd, const void *buf, size_t count);
+
     extern int __real_close(int fd);
+
     int __wrap_open(const char *pathname, int flags, ...)
     {
         mode_t mode = 0;
+
         if (flags & O_CREAT)
         {
             va_list args;
