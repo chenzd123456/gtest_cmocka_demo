@@ -15,11 +15,6 @@ protected:
         {
             mock_functions = new MockFunctions();
         }
-
-        // Reset mock expectations before each test
-        // ::testing::Mock::VerifyAndClearExpectations(mock_functions_ptr.get());
-        // Allow mock to leak since it's managed by shared_ptr
-        // ::testing::Mock::AllowLeak(mock_functions_ptr.get());
     }
 
     void TearDown() override
