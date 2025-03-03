@@ -24,8 +24,6 @@ protected:
             delete mock_functions;
             mock_functions = nullptr;
         }
-
-        std::cout << "TearDown finish" << std::endl;
     }
 };
 
