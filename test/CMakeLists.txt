@@ -29,22 +29,22 @@ include_directories(
 )
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/../src/*.c" "${PROJECT_SOURCE_DIR}/../src/*.cpp")
-file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE MOCK_SOURCES "${PROJECT_SOURCE_DIR}/src/mock_functions.cpp")
+file(GLOB_RECURSE TEST_CASES_SOURCES "${PROJECT_SOURCE_DIR}/src/cases/*.cpp")
+file(GLOB_RECURSE TEST_FW_SOURCES "${PROJECT_SOURCE_DIR}/src/common/*.cpp")
 
 # Add test main executable
 add_executable(test_main
     ${PROJECT_SOURCE_DIR}/src/main.cpp
 )
 
-# Add test library
-add_library(test_lib STATIC
-    ${TEST_SOURCES}
+# Add test cases lib library
+add_library(test_cases_lib STATIC
+    ${TEST_CASES_SOURCES}
 )
 
-# Add mock library
-add_library(mock_lib STATIC
-    ${MOCK_SOURCES}
+# Add test common lib library
+add_library(test_common_lib STATIC
+    ${TEST_FW_SOURCES}
 )
 
 include_directories({CMAKE_SOURCE_DIR}/deps/cmocka/include)
@@ -53,8 +53,8 @@ include_directories({CMAKE_SOURCE_DIR}/deps/cmocka/include)
 target_link_libraries(test_main PRIVATE 
     gcov
     gtest gmock cmocka
-    test_lib
-    mock_lib
+    test_cases_lib
+    test_common_lib
 )
 
 # Set output directory
@@ -69,6 +69,6 @@ endif()
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(test_main PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
     target_link_options(test_main PRIVATE -Wl,--wrap=open -Wl,--wrap=write -Wl,--wrap=close)
-    target_compile_options(test_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
-    target_compile_options(mock_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+    target_compile_options(test_cases_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+    target_compile_options(test_common_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
 endif()

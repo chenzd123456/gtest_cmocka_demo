@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
-#include "print_to_file.h"
-#include "mock_functions.h"
 #include <stddef.h>
-using ::testing::_;
-using ::testing::Return;
+
+#include "common/common.h"
+
+#include "print_to_file.h"
 
 class PrintToFileTest : public ::testing::Test
 {
