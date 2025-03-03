@@ -1,24 +1,33 @@
 #include "mock_functions.h"
-
-#include <cstdio>
-#include <cstdarg>
+#include "gmock/gmock.h"
 
 #include <fcntl.h>
+#include <stdarg.h>
+
+extern MockFunctions* mock_functions = nullptr;
 
 extern "C"
 {
     int __wrap_open(const char *pathname, int flags, ...)
     {
-        return 3;
+        mode_t mode = 0;
+        if (flags & O_CREAT)
+        {
+            va_list args;
+            va_start(args, flags);
+            mode = va_arg(args, mode_t);
+            va_end(args);
+        }
+        return mock_functions->open(pathname, flags, mode);
     }
 
     ssize_t __wrap_write(int fd, const void *buf, size_t count)
     {
-        return 0;
+        return mock_functions->write(fd, buf, count);
     }
 
     int __wrap_close(int fd)
     {
-        return -1;
+        return mock_functions->close(fd);
     }
 }
