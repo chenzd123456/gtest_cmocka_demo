@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "mock_functions.h"
 #include "gmock/gmock.h"
 
@@ -25,38 +26,19 @@ extern "C"
             mode = va_arg(args, mode_t);
             va_end(args);
         }
-        if (mock_functions != nullptr)
-        {
-            return mock_functions->open(pathname, flags, mode);
-        }
-        else
-        {
-            return __real_open(pathname, flags, mode);
-        }
+        assert(mock_functions != nullptr);
+        return mock_functions->open(pathname, flags, mode);
     }
 
     ssize_t __wrap_write(int fd, const void *buf, size_t count)
     {
-        if (mock_functions != nullptr)
-        {
-            return mock_functions->write(fd, buf, count);
-        }
-        else
-        {
-            return __real_write(fd, buf, count);
-        }
+        assert(mock_functions != nullptr);
+        return mock_functions->write(fd, buf, count);
     }
 
     int __wrap_close(int fd)
     {
-        if (mock_functions != nullptr)
-        {
-            return mock_functions->close(fd);
-        }
-        else
-        {
-
-            return __real_close(fd);
-        }
+        assert(mock_functions != nullptr);
+        return mock_functions->close(fd);
     }
 }
