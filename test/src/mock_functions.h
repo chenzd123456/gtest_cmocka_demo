@@ -3,10 +3,11 @@
 #include <stddef.h>
 #include <gmock/gmock.h>
 
-class MockFunctions {
+class MockFunctions
+{
 public:
     virtual ~MockFunctions() = default;
-    
+
     // Mock methods
     MOCK_METHOD(int, open, (const char *pathname, int flags));
     MOCK_METHOD(ssize_t, write, (int fd, const void *buf, size_t count));
@@ -17,10 +18,11 @@ public:
 extern MockFunctions mock_functions;
 
 // C wrapper functions
-extern "C" {
-    int mock_open(const char *pathname, int flags);
-    ssize_t mock_write(int fd, const void *buf, size_t count);
-    int mock_close(int fd);
+extern "C"
+{
+    int __wrap_open(const char *pathname, int flags, ...);
+    ssize_t __wrap_write(int fd, const void *buf, size_t count);
+    int __wrap_close(int fd);
 }
 
 #endif // MOCK_FUNCTIONS_H

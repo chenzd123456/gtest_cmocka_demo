@@ -33,33 +33,24 @@ file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 # Add test executable
 add_executable(${PROJECT_NAME}
-    # main.cpp
-    #print_to_file_test.cpp
-    # fib_test.cpp
-    src/mock_functions.cpp
     ${SOURCES} ${TEST_SOURCES}
 )
 
-# Add mock library
-file(GLOB_RECURSE MOCK_SOURCES "${PROJECT_SOURCE_DIR}/src/mock_functions.cpp")
-add_library(mock_lib STATIC ${MOCK_SOURCES})
-target_include_directories(mock_lib PRIVATE ${CMAKE_SOURCE_DIR}/deps/cmocka/include)
-
-# Set C++ as linker language
-set_property(TARGET ${PROJECT_NAME} PROPERTY LINKER_LANGUAGE CXX)
+include_directories({CMAKE_SOURCE_DIR}/deps/cmocka/include)
 
 # Link test libraries
 target_link_libraries(${PROJECT_NAME} PRIVATE 
     gcov
-    mock_lib
-    gtest gmock 
+    gtest gmock cmocka
 )
-
-# Add test
-# gtest_discover_tests(unit_tests)
 
 # Set output directory
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+
+if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0")
+endif()
 
 # Add compiler options
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
