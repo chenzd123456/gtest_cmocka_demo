@@ -3,8 +3,14 @@
 
 #include <fcntl.h>
 #include <stdarg.h>
+#include <assert.h>
 
 MockFunctions *mock_functions = nullptr;
+
+#define check_mock_functions()                                                   \
+    {                                                                            \
+        assert(mock_functions != nullptr && "mock_functions should be nullptr"); \
+    }
 
 extern "C"
 {
@@ -27,6 +33,7 @@ extern "C"
         }
         if (mock_functions != nullptr)
         {
+            check_mock_functions();
             return mock_functions->open(pathname, flags, mode);
         }
         else
@@ -39,6 +46,7 @@ extern "C"
     {
         if (mock_functions != nullptr)
         {
+            check_mock_functions();
             return mock_functions->write(fd, buf, count);
         }
         else
@@ -51,6 +59,7 @@ extern "C"
     {
         if (mock_functions != nullptr)
         {
+            check_mock_functions();
             return mock_functions->close(fd);
         }
         else
