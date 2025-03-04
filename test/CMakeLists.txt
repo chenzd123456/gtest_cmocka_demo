@@ -30,31 +30,18 @@ include_directories(
 
 file(GLOB_RECURSE SOURCES "${PROJECT_SOURCE_DIR}/../src/*.c" "${PROJECT_SOURCE_DIR}/../src/*.cpp")
 file(GLOB_RECURSE TEST_SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
-file(GLOB_RECURSE MOCK_SOURCES "${PROJECT_SOURCE_DIR}/src/mock_functions.cpp")
 
-# Add test main executable
-add_executable(test_main
-    ${PROJECT_SOURCE_DIR}/src/main.cpp
-)
-
-# Add test library
-add_library(test_lib STATIC
-    ${TEST_SOURCES}
-)
-
-# Add mock library
-add_library(mock_lib STATIC
-    ${MOCK_SOURCES}
+# Add test executable
+add_executable(${PROJECT_NAME}
+    ${SOURCES} ${TEST_SOURCES}
 )
 
 include_directories({CMAKE_SOURCE_DIR}/deps/cmocka/include)
 
 # Link test libraries
-target_link_libraries(test_main PRIVATE 
+target_link_libraries(${PROJECT_NAME} PRIVATE 
     gcov
     gtest gmock cmocka
-    test_lib
-    mock_lib
 )
 
 # Set output directory
@@ -67,8 +54,6 @@ endif()
 
 # Add compiler options
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(test_main PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
-    target_link_options(test_main PRIVATE -Wl,--wrap=open -Wl,--wrap=write -Wl,--wrap=close)
-    target_compile_options(test_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
-    target_compile_options(mock_lib PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic -fprofile-arcs -ftest-coverage)
+    target_link_options(${PROJECT_NAME} PRIVATE -Wl,--wrap=open -Wl,--wrap=write -Wl,--wrap=close)
 endif()
